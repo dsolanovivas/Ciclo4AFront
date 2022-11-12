@@ -32,7 +32,7 @@ export const Menu = (props) => {
 
         <nav className='navbar navbar-expand-lg navbar-light bg-light'>
           <div className='container-fluid'>
-            <label className='navbar-brand h5'>Menú Principal</label>
+            <label className='navbar-brand h4'>Menú Principal</label>
             <button className="navbar-toggler" 
                     type="button" 
                     data-bs-toggle="collapse" 
@@ -52,6 +52,8 @@ export const Menu = (props) => {
           </div>
         </nav>
     </div>
+    
+    <br/>
 
     { option === "CrearEstudiante" && <CrearEstudiante /> }
     { option === "ListarEstudiantes" && <ListarEstudiantes /> }

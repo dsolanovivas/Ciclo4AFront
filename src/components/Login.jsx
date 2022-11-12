@@ -1,5 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Menu } from './Menu'
+import { ToastEstudiante } from "./ToastEstudiante"
 
 export const Login = () => {
 
@@ -33,6 +34,9 @@ export const Login = () => {
 
   return (
     <div className="container" style={{background: "ligthgray", marginTop:20, padding:20 }}>
+        
+        {<ToastEstudiante Title={"Bienvenido"} Msg={"Ingrese a nuestro sistema de estudiantes"} duracion={4000}></ToastEstudiante>}
+        
         <form id="form_login">
             <div>
                 <h1>Login</h1>
@@ -48,7 +52,7 @@ export const Login = () => {
         </form>
 
         { miLogin === "true" && <Menu usuario={miUser} /> }
-
+        
     </div>
   )
 }
