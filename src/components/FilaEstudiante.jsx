@@ -12,15 +12,15 @@ export const FilaEstudiante = (props) => {
 
   function editarEstudiante(e){
     e.preventDefault();
-    props.handle();
+    props.handleOpenModal();
   }
 
   return (
     <>
     <tr>
-        <td>Juan Gomez</td>
-        <td>yosoyeljuan@gmail.com</td>
-        <td>987654321</td>
+        <td>{props.obj.nombre}</td>
+        <td>{props.obj.email}</td>
+        <td>{props.obj.cedula}</td>
         <td>
             <Link className="edit-link" onClick={editarEstudiante} >Editar</Link>
             &nbsp;
