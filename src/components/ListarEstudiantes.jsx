@@ -10,6 +10,8 @@ export const ListarEstudiantes = () => {
   const [showModal, setShowModal] = useState(false);
   const [estudiantes, setEstudiantes] = useState([]);
   const [inputText, setInputText] = useState("");
+  const [recargar, setRecargar] = useState(false);
+  const [estudiante, setEstudiante] = useState([]);
 
   useEffect( ()=> {
 
@@ -39,30 +41,35 @@ export const ListarEstudiantes = () => {
     }
 
     
-  } , [inputText]);
+  } , [inputText, recargar]);
 
   let inputHandler = (e) =>{
-    console.log(e.key)
+    //console.log(e.key)
     
-    if (e.key === "Enter")
-    {
+    //if (e.key === "Enter")
+    //{
       let lowerCase = e.target.value.toLowerCase();
       setInputText(lowerCase);
-    }
+    //}
     
   }
 
   function dataTable(){
     return estudiantes.map((res) => {
-      return <FilaEstudiante handleOpenModal={handleOpen} obj={res}></FilaEstudiante>
+      return <FilaEstudiante handleOpenModal={handleOpen} obj={res} RData={reloadData}></FilaEstudiante>
     })
   }
 
-  function handleOpen(){
-    setShowModal(true)
+  function handleOpen(data){
+    setShowModal(true);
+    setEstudiante(data);
   }
   function handleClose(){
-    setShowModal(false)
+    setShowModal(false);
+  }
+  function reloadData(){
+    setInputText("");
+    setRecargar(!recargar);
   }
 
   return (
@@ -72,8 +79,8 @@ export const ListarEstudiantes = () => {
           id="outlined-basic" 
           label="Search" 
           variant="outlined"
-          //onChange={inputHandler}
-          onKeyDown={inputHandler}
+          onChange={inputHandler}
+          //onKeyDown={inputHandler}
           fullWidth />
       </div>
       <br/>
@@ -88,7 +95,7 @@ export const ListarEstudiantes = () => {
         </thead>
         <tbody>{dataTable()}</tbody>
       </Table>
-      {showModal && <EditarEstudiante handleC={handleClose}/> }
+      {showModal && <EditarEstudiante handleCloseModal={handleClose} obj={estudiante} RData={reloadData}/> }
     </div>
   )
 }
