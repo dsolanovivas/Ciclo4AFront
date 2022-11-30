@@ -2,8 +2,9 @@ import React, { useEffect, useState } from 'react'
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from "react-bootstrap/Form"
-import axios from 'axios';
-import Swal from "sweetalert2";
+import { AlertDescription } from "./AlertDescription"
+import apiInstance from '../AxiosConect';
+import { ESTUDIANTES_ENDPOINTS } from "./GlobalConstants"
 
 
 export const EditarEstudiante = (props) => {
@@ -21,15 +22,14 @@ export const EditarEstudiante = (props) => {
   function editarRegistro(e){
     e.preventDefault();
     //Aqui Se envian los datos al servidor (API REST)
-    axios.put("http://127.0.0.1:4000/APIRESTCICLO4A/actualizar-estudiante/"+ props.obj._id,{
+    apiInstance.put(ESTUDIANTES_ENDPOINTS.ACTUALIZAR_ESTUDIANTE + "/" + props.obj._id,{
       nombre:myName,
       email:myEmail,
       cedula:myId,
     }).then((res)=>{
-      //alert("Estudiante actualizado con exito");
-      mostrarAlerta();
+      AlertDescription('Correcto', 'Se Registro el estudiante', 'success');
     }).catch((error)=>{
-      alert("problemas al actualizar el estudiante");
+      AlertDescription("Upps!","problemas al actualizar el estudiante","error");
     });
     props.RData();
     props.handleCloseModal();
@@ -38,14 +38,6 @@ export const EditarEstudiante = (props) => {
   function cerrarEdicion(){
     alert("Cerro la edicion")
     props.handleCloseModal();
-  }
-
-  function mostrarAlerta(){
-    Swal.fire(
-      'Correcto',
-      'Se Registro el estudiante',
-      'success'
-    )
   }
 
   return (

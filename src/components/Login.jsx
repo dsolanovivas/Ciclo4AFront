@@ -1,10 +1,25 @@
 import React, { useState, useEffect } from 'react'
 import { Menu } from './Menu'
 import { ToastEstudiante } from "./ToastEstudiante"
+import apiInstance from '../AxiosConect';
+import { USER_ENDPOINTS } from "./GlobalConstants"
+import { AlertDescription } from "./AlertDescription"
 
 export const Login = () => {
 
-  const [miLogin, setMiLogin] = useState("false");
+  const comprobarSesion = () => {
+    var Localsesion = localStorage.getItem("UserSesion");
+    var sesion = sessionStorage.getItem("UserSesion");
+
+    if (Localsesion || sesion) {
+        return true;
+    }
+    else{
+        return false;
+    }
+  }
+
+  const [miLogin, setMiLogin] = useState(comprobarSesion());
   const [miUser, setMiUser] = useState("");
   const [miPass, setMiPass] = useState("");
 
@@ -16,7 +31,36 @@ export const Login = () => {
         alert("Complete los datos de manera correcta");
     }
     else{
-        if( miUser === "admin" && miPass === "123"){
+        apiInstance.post(USER_ENDPOINTS.LOGIN,{
+            email: miUser,
+            password: miPass
+        })
+        .then((res)=>{
+            AlertDescription("Correcto", "Inicio de Sesion Exitoso", "success");
+            document.getElementById("form_login").style.display = "none";
+
+            let data = {
+                nombre : res.data.usuario.nombre,
+                email : res.data.usuario.email,
+                token : res.data.token,
+                expiredAt : CalcularExpiredAt()
+            }
+
+            setMiLogin(JSON.stringify(data));
+            let valueCheck = document.getElementById("keep").checked;
+            (valueCheck === true) ?  localStorage.setItem("UserSesion", JSON.stringify(data)) : sessionStorage.setItem("UserSesion", JSON.stringify(data))
+
+        })
+        .catch((error)=>{
+            AlertDescription("Upps!", "Usuario o contraseña incorrectos", "error");
+            document.getElementById("txtusu").value = "";
+            document.getElementById("txtpass").value = "";
+            document.getElementById("txtusu").focus();
+        });
+
+
+
+        /*if( miUser === "admin" && miPass === "123"){
             setMiLogin("true");
             document.getElementById("form_login").style.display = "none";
         }
@@ -26,9 +70,19 @@ export const Login = () => {
             document.getElementById("txtusu").value = "";
             document.getElementById("txtpass").value = "";
             document.getElementById("txtusu").focus();
-        }
+        }*/
     }
 
+  }
+
+  function CalcularExpiredAt(){
+    var currenDate = new Date();
+    var time = currenDate.getTime();
+    var addMlSeconds = 1000 * 60 * 55;
+    var newDate = new Date(time + addMlSeconds);
+    console.log(currenDate);
+    console.log(newDate);
+    return newDate;
   }
 
 
@@ -37,6 +91,8 @@ export const Login = () => {
         
         {<ToastEstudiante Title={"Bienvenido"} Msg={"Ingrese a nuestro sistema de estudiantes"} duracion={4000}></ToastEstudiante>}
         
+        { miLogin === false ?
+
         <form id="form_login">
             <div>
                 <h1>Login</h1>
@@ -49,9 +105,15 @@ export const Login = () => {
             </div>
             <br/>
             <input type="submit" className="btn btn-primary" value="Ingresar" onClick={iniciarSesion}></input>
+            <br/>
+            <br/>
+            <div className="form-check">
+                <input className="form-check-input" type="checkbox" id="keep" value=""></input>
+                <label className="form-check-label">¿Desea mantener sesion?</label>
+            </div>
         </form>
 
-        { miLogin === "true" && <Menu usuario={miUser} /> }
+        : <Menu usuario={miUser} /> }
         
     </div>
   )

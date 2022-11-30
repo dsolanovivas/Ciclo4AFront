@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import TextField from "@mui/material/TextField"
-import axios from "axios"
 import Table from "react-bootstrap/Table"
 import { FilaEstudiante } from "./FilaEstudiante"
 import { EditarEstudiante } from "./EditarEstudiante"
+import apiInstance from '../AxiosConect';
+import { ESTUDIANTES_ENDPOINTS } from "./GlobalConstants"
 
 export const ListarEstudiantes = () => {
 
@@ -17,8 +18,8 @@ export const ListarEstudiantes = () => {
 
     if (inputText !== "")
     {
-      axios
-      .get("http://127.0.0.1:4000/APIRESTCICLO4A/busqueda-estudiante/"+inputText)
+      apiInstance
+      .get(ESTUDIANTES_ENDPOINTS.BUSCAR_ESTUDIANTE + "/" + inputText)
       .then((res) =>{
         setEstudiantes(res.data);
       })
@@ -29,8 +30,8 @@ export const ListarEstudiantes = () => {
     }
     else{
 
-      axios
-      .get("http://127.0.0.1:4000/APIRESTCICLO4A/listar-estudiantes")
+      apiInstance
+      .get(ESTUDIANTES_ENDPOINTS.OBTENER_ESTUDIANTES)
       .then((res) =>{
         setEstudiantes(res.data);
       })

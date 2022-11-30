@@ -1,7 +1,9 @@
 import React, { useState } from 'react'
 import Form from "react-bootstrap/Form"
 import Button from 'react-bootstrap/Button'
-import axios from 'axios';
+import { AlertDescription } from "./AlertDescription"
+import apiInstance from '../AxiosConect';
+import { ESTUDIANTES_ENDPOINTS } from "./GlobalConstants"
 
 
 export const CrearEstudiante = () => {
@@ -13,18 +15,18 @@ export const CrearEstudiante = () => {
   function enviarRegistro(e){
     e.preventDefault();
     //Aqui Se envian los datos al servidor (API REST)
-    axios
-      .post("http://127.0.0.1:4000/APIRESTCICLO4A/crear-estudiante",{
+    apiInstance
+      .post(ESTUDIANTES_ENDPOINTS.CREAR_ESTUDIANTE,{
         nombre: myName,
         email: myEmail,
         cedula: myId
       })
       .then((res) =>{
-        alert("Estudiante creado exitosamente");
+        AlertDescription('Correcto', 'Estudiante creado exitosamente', 'success');
         console.log(res);
       })
       .catch((error)=>{
-        alert("Problemas al crear estudiante");
+        AlertDescription("Upps!","Problemas al crear estudiante","error");
         console.log(error);
       });
 

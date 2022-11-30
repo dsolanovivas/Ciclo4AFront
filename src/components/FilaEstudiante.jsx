@@ -1,20 +1,21 @@
-import axios from 'axios'
-import React, { useState } from 'react'
+import React from 'react'
 import Button from 'react-bootstrap/Button'
 import { Link } from 'react-router-dom'
-import { EditarEstudiante } from "./EditarEstudiante"
+import { AlertDescription } from "./AlertDescription"
+import apiInstance from '../AxiosConect';
+import { ESTUDIANTES_ENDPOINTS } from "./GlobalConstants"
 
 export const FilaEstudiante = (props) => {
 
   function borrarEstudiante(){
     // Aqui se debe implementar el llamado a eliminar estudiante en API REST
-    axios
-      .delete("http://127.0.0.1:4000/APIRESTCICLO4A/borrar-estudiante/"+ props.obj._id)
+    apiInstance
+      .delete(ESTUDIANTES_ENDPOINTS.ELIMINAR_ESTUDIANTE + "/" + props.obj._id)
       .then((res)=>{
-        alert("Estudiante eliminado exitosamente");
+        AlertDescription('Correcto', 'Estudiante eliminado exitosamente', 'success');
       })
       .catch((error)=>{
-        alert("Problemas al eliminar el estudiante");
+        AlertDescription("Upps!","Problemas al eliminar el estudiante","error");
         console.log(error);
       });
 
