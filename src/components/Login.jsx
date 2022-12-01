@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import { Menu } from './Menu'
 import { ToastEstudiante } from "./ToastEstudiante"
 import apiInstance from '../AxiosConect';
@@ -57,22 +57,7 @@ export const Login = () => {
             document.getElementById("txtpass").value = "";
             document.getElementById("txtusu").focus();
         });
-
-
-
-        /*if( miUser === "admin" && miPass === "123"){
-            setMiLogin("true");
-            document.getElementById("form_login").style.display = "none";
-        }
-        else{
-            setMiLogin("false");
-            alert("Error de usuario y/o contraseña!!!")
-            document.getElementById("txtusu").value = "";
-            document.getElementById("txtpass").value = "";
-            document.getElementById("txtusu").focus();
-        }*/
     }
-
   }
 
   function CalcularExpiredAt(){
@@ -87,13 +72,13 @@ export const Login = () => {
 
 
   return (
-    <div className="container" style={{background: "ligthgray", marginTop:20, padding:20 }}>
+    <div className="container" style={{background: "ligthgray", marginTop:20, padding:20}}>
         
         {<ToastEstudiante Title={"Bienvenido"} Msg={"Ingrese a nuestro sistema de estudiantes"} duracion={4000}></ToastEstudiante>}
         
         { miLogin === false ?
 
-        <form id="form_login">
+        <form id="form_login" style={{paddingLeft: 500, paddingRight: 500}} >
             <div>
                 <h1>Login</h1>
                 <label>Username:  </label>
